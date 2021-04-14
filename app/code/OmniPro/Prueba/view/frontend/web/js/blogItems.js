@@ -2,8 +2,10 @@ define([
     'ko',
     'jquery',
     'uiComponent',
-    'mage/storage'
-], function(ko, $, Component, storage) {
+    'mage/storage',
+    'mage/url'
+], function(ko, $, Component, storage, url) {
+    url.setBaseUrl(window.BASE_URL);
     return Component.extend({
         defaults: {
             titulo: '',
