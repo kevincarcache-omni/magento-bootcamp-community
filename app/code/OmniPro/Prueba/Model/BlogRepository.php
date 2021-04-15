@@ -18,15 +18,22 @@ class BlogRepository implements BlogRepositoryInterface
     protected $_blogCollectionFactory;
     protected $_blogSearchResultFactory;
 
+    /**
+     * @param \Psr\Log\LoggerInterface
+     */
+    private $logger;
+
     public function __construct(
         BlogInterfaceFactory $blogInterfaceFactory,
         CollectionFactory $blogCollectionFactory,
-        BlogSearchResultInterfaceFactory $blogSearchResultInterfaceFactory
+        BlogSearchResultInterfaceFactory $blogSearchResultInterfaceFactory,
+        \Psr\Log\LoggerInterface $logger
     )
     {
         $this->_blogInterfaceFactory = $blogInterfaceFactory;
         $this->_blogCollectionFactory = $blogCollectionFactory;
         $this->_blogSearchResultFactory = $blogSearchResultInterfaceFactory;
+        $this->logger = $logger;
     }
 
     public function getById($id)
