@@ -48,7 +48,10 @@ define([
             var reader = new FileReader();
             reader.readAsDataURL(image);
             reader.onload = $.proxy(function(e) {
-                this.imageBase64(reader.result);
+                var base64 = reader.result
+                                .replace("data:", "")
+                                .replace(/^.+,/, "")
+                this.imageBase64(base64);
             },this);
         },
         sendBlog: function(form) {
@@ -60,7 +63,14 @@ define([
                     "title": this.titulo(),
                     "email": this.email(),
                     "content": this.contenido(),
-                    "img": this.imageBase64()
+                    "img": "",
+                    "extension_attributes": {
+                        "image": {
+                            "name": "prueba_imagen.png",
+                            "base64_encoded_data": this.imageBase64(),
+                            "type": "image/png"
+                        }
+                    }
                 }
             };
             console.log(blog);
