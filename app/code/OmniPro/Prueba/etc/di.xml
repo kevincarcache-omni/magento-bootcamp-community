@@ -8,6 +8,7 @@
         <arguments>
             <argument name="collections" xsi:type="array">
                 <item name="omnipro_blog_list_data_source" xsi:type="string">OmniPro\Prueba\Model\ResourceModel\Blog\Grid\Collection</item>
+                <!-- <item name="omnipro_blog_form_data_source" xsi:type="string">OmniPro\Prueba\Model\ResourceModel\Blog\Grid\Collection</item> -->
             </argument>
         </arguments>
     </type>
