@@ -32,7 +32,7 @@ class BlogRepositoryPlugin
                 $image = $extensionAttributes->getImage();
                 if($image) {
                     $imagePath = $this->imageProcessor->processImageContent('blog/post', $image);
-                    $blog->setImg($imagePath);
+                    $blog->setImg('blog/post' . $imagePath);
                 }
             }
             return [$blog];
