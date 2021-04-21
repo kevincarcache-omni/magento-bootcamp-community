@@ -1,6 +1,9 @@
 <?php
 namespace OmniPro\Prueba\Controller\Adminhtml\Blog;
 
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
+
 class Save extends \Magento\Backend\App\Action
 {
     const ADMIN_RESOURCE = 'OmniPro_Prueba::new';
@@ -50,17 +53,35 @@ class Save extends \Magento\Backend\App\Action
         return parent::__construct($context);
     }
 
-    /**
-     * Index action
-     *
-     * @return \Magento\Framework\View\Result\Page
-     */
     public function execute()
     {
         $resultRedirect = $this->resultRedirectFactory->create();
         $data = $this->getRequest()->getPostValue();
-        $this->logger->debug('omni-blog '. json_encode($data));
-        return $resultRedirect->setPath('*/index');
+        if($data) {
+            $blog = $this->blogInterfaceFactory->create();
+            $id = $this->getRequest()->getParam('id');
+            if($id) {
+                try {
+                    $blog = $this->blogRepository->getById($id);
+                } catch (NoSuchEntityException $e) {
+
+                }
+            }
+            $blog->setTitle($data['title']);
+            $blog->setEmail($data['email']);
+            $blog->setContent($data['content']);
+
+            try {
+                $this->blogRepository->save($blog);
+                $this->messageManager->addSuccessMessage(__("El blog ha sido guardado exitosamente"));
+                $this->dataPersistor->clear('omnipro_blog_blogitem');
+            } catch (LocalizedException $e) {
+                $this->messageManager->addErrorMessage($e->getMessage());
+            } catch (\Exception $e) {
+                $this->messageManager->addExceptionMessage($e, __("Ha ocurrido un error al guardar el blog"));
+            }
+        }
+        return $resultRedirect->setPath('*/*/index');
     }
 
     /**
